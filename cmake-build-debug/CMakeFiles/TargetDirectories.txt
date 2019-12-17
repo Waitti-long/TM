@@ -1,0 +1,7 @@
+D:/Projects/CLion/TM/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+D:/Projects/CLion/TM/cmake-build-debug/CMakeFiles/sfml.dir
+D:/Projects/CLion/TM/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Projects/CLion/TM/cmake-build-debug/libs/googletest/CMakeFiles/gtest.dir
+D:/Projects/CLion/TM/cmake-build-debug/libs/googletest/CMakeFiles/gtest_main.dir
+D:/Projects/CLion/TM/cmake-build-debug/libs/googletest/CMakeFiles/edit_cache.dir
+D:/Projects/CLion/TM/cmake-build-debug/libs/googletest/CMakeFiles/rebuild_cache.dir

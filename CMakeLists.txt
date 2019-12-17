@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.15)
+set(PROJECT_NAME "sfml")
+project(${PROJECT_NAME})
+set(SFML_DIR "${CMAKE_CURRENT_LIST_DIR}/libs/SFML-2.5.1/lib/cmake/SFML")
+set(TGUI_DIR "${CMAKE_CURRENT_LIST_DIR}/libs/TGUI-0.8/lib/cmake/TGUI")
+file(GLOB ALL_REQUIRED_DLL "libs/required_dlls/*.dll")
+file(COPY ${ALL_REQUIRED_DLL} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(GLOB TGUI_DLL "libs/TGUI-0.8/bin/*.dll")
+file(COPY ${TGUI_DLL} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_CXX_STANDARD 14)
+link_libraries(stdc++fs) #link the filesystem
+file(GLOB_RECURSE SCRF "src/*.cpp" "src/*.hpp")
+add_executable(${PROJECT_NAME} ${SCRF} main.cpp src/test.cpp src/TM.cpp src/TM.h)
+find_package(SFML 2.5.1 COMPONENTS system window graphics network audio REQUIRED)
+find_package(TGUI 0.8 REQUIRED)
+
+add_subdirectory(./libs/googletest)
+include_directories(./libs/googletest/include)
+
+target_link_libraries(${PROJECT_NAME} sfml-audio sfml-graphics sfml-window sfml-system tgui gtest gtest_main)

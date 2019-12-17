@@ -1,0 +1,11 @@
+"D:\Program Files\JetBrains\CLion 2019.3.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\Projects\CLion\TM
+-- Found SFML 2.5.1 in D:/Projects/CLion/TM/libs/SFML-2.5.1/lib/cmake/SFML
+-- Found TGUI 0.8.6 in D:/Projects/CLion/TM/libs/TGUI-0.8/lib/cmake/TGUI
+CMake Warning at libs/googletest/CMakeLists.txt:54 (project):
+  VERSION keyword not followed by a value or was followed by a value that
+  expanded to nothing.
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Projects/CLion/TM/cmake-build-debug
