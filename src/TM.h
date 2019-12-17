@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <fstream>
 
 class TM {
 public:
@@ -20,12 +21,12 @@ private:
     std::string paper;
     std::map<std::tuple<int, char>, std::tuple<int, char, Direction>> rules;
 
-    bool _read_rules();
+    bool _read_rules(const std::string& address);
 public:
-    bool init(const std::string& str, char s);
+    bool init(const std::string& str, char s,const std::string& address);
 
     /*
-     * 执行下一步操作，成功返回true，否则返回false
+     * 执行下一步操作，成功返回true，停机返回false
      * */
     bool read();
 
