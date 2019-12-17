@@ -10,7 +10,7 @@ file(COPY ${TGUI_DLL} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 set(CMAKE_CXX_STANDARD 14)
 link_libraries(stdc++fs) #link the filesystem
 file(GLOB_RECURSE SCRF "src/*.cpp" "src/*.hpp")
-add_executable(${PROJECT_NAME} ${SCRF} main.cpp src/test.cpp src/TM.cpp src/TM.h)
+add_executable(${PROJECT_NAME} ${SCRF} main.cpp src/test.cpp src/TM.cpp src/TM.h src/Tools.cpp src/Tools.h)
 find_package(SFML 2.5.1 COMPONENTS system window graphics network audio REQUIRED)
 find_package(TGUI 0.8 REQUIRED)
 

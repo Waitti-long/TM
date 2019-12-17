@@ -30,7 +30,9 @@ public:
      * */
     bool read();
 
-
+    std::string get(){
+        return paper;
+    }
 };
 
 
