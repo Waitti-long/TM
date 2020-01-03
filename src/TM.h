@@ -18,20 +18,35 @@ private:
     int state;
     int location;
     char stop;
+
     std::string paper;
     std::map<std::tuple<int, char>, std::tuple<int, char, Direction>> rules;
+    std::vector<std::tuple<int,char>> stops;
 
     bool _read_rules(const std::string& address);
+    auto& _find();
 public:
+    TM(){
+        state = 0;
+    }
+
     bool init(const std::string& str, char s,const std::string& address);
 
     /*
-     * 执行下一步操作，成功返回true，停机返回false
+     * 执行下一步操作，成功返回 0 ，失败返回1，结束返回2
      * */
-    bool read();
+    int read();
 
     std::string get(){
         return paper;
+    }
+
+    int loc(){
+        return location;
+    }
+
+    int sta(){
+        return state;
     }
 };
 

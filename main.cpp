@@ -12,10 +12,11 @@ using namespace sf;
 using namespace tgui;
 using namespace std;
 
-void paint(RenderWindow &win, TM &tm, sf::Font font) {
+void paint(RenderWindow &win, TM &tm, const sf::Font& font) {
     int width = win.getSize().x;
     int height = win.getSize().y;
     double block_size = (width * 3.0 / 4) / (int) tm.get().size();
+    block_size = block_size > height / 3 ? height / 3 : block_size;
     for (int i = 0; i < tm.get().size(); ++i) {
         sf::RectangleShape rect(sf::Vector2f(block_size, block_size));
         sf::Text text;
@@ -30,6 +31,20 @@ void paint(RenderWindow &win, TM &tm, sf::Font font) {
         win.draw(rect);
         win.draw(text);
     }
+    sf::RectangleShape rect(sf::Vector2f(block_size, block_size));
+    rect.setPosition(tm.loc() * block_size + 10, height / 4 + block_size + 20);
+    rect.setOutlineColor(sf::Color::Black);
+    rect.setOutlineThickness(5);
+
+    sf::Text text;
+    text.setFont(font);
+    text.setFillColor(sf::Color::Black);
+    text.setString("q" + to_string(tm.sta()));
+    text.setCharacterSize(block_size / 1.5);
+    text.setPosition(tm.loc() * block_size + 10, height / 4.1 + block_size + 20);
+
+    win.draw(rect);
+    win.draw(text);
 }
 
 #ifndef __TEST__
@@ -42,7 +57,9 @@ int main() {
     read_directory(folder, address);
 
     sf::Font font;
-    font.loadFromFile("./ttf/Bebas-Regular.ttf");
+    if(!font.loadFromFile("./ttf/Bebas-Regular.ttf")){
+        exit(-1);
+    }
 
     VideoMode model = VideoMode::getDesktopMode();
     model.height /= 1.2;
@@ -71,6 +88,7 @@ int main() {
         string s(listBox->getSelectedItem().toAnsiString());
         tm.init(editBox->getText().toAnsiString(), 'B', folder + "/" + s);
     });
+    listBox->setSelectedItemByIndex(0);
     gui.add(listBox);
 
     auto button = tgui::Button::create();
@@ -83,6 +101,40 @@ int main() {
         tm.init(editBox->getText().toAnsiString(), 'B', folder + "/" + s);
     });
     gui.add(button);
+
+    auto button1 = tgui::Button::create();
+    button1->setSize(win.getSize().y / 10, win.getSize().y / 2.5);
+    button1->setPosition(win.getSize().x * 3 / 4 + 20, win.getSize().y / 5+20);
+    button1->setText("Step");
+    button1->setTextSize(win.getSize().y / 12);
+    button1->connect("pressed", [&]() {
+        int success = tm.read();
+        if(success == 0){
+            auto child = tgui::ChildWindow::create();
+            child->setSize(300, 120);
+            child->setPosition(420, 80);
+            child->setTitle("Sorry");
+            auto label = tgui::Label::create();
+            label->setText("Sorry,it's not allowed");
+            label->setPosition(0, 0);
+            label->setTextSize(24);
+            child->add(label);
+            gui.add(child);
+        }
+        if(success == 2){
+            auto child = tgui::ChildWindow::create();
+            child->setSize(300, 120);
+            child->setPosition(420, 80);
+            child->setTitle("Success");
+            auto label = tgui::Label::create();
+            label->setText("Success");
+            label->setPosition(0, 0);
+            label->setTextSize(24);
+            child->add(label);
+            gui.add(child);
+        }
+    });
+    gui.add(button1);
 
     win.setFramerateLimit(60);
     while (win.isOpen()) {
