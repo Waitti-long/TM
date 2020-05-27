@@ -12,7 +12,7 @@ using namespace sf;
 using namespace tgui;
 using namespace std;
 
-void paint(RenderWindow &win, TM &tm, const sf::Font& font) {
+void paint(RenderWindow &win, TM &tm, const sf::Font &font) {
     int width = win.getSize().x;
     int height = win.getSize().y;
     double block_size = (width * 3.0 / 4) / (int) tm.get().size();
@@ -57,9 +57,10 @@ int main() {
     read_directory(folder, address);
 
     sf::Font font;
-    if(!font.loadFromFile("./ttf/Bebas-Regular.ttf")){
+    if (!font.loadFromFile("./ttf/Bebas-Regular.ttf")) {
         exit(-1);
     }
+
 
     VideoMode model = VideoMode::getDesktopMode();
     model.height /= 1.2;
@@ -67,6 +68,14 @@ int main() {
     RenderWindow win(model, "Turing Machine");
 
     Gui gui(win);
+
+    auto listBox1 = tgui::ListBox::create();
+    listBox1->setSize(win.getSize().y / 4, win.getSize().y * 4 / 5);
+    listBox1->setItemHeight(24);
+    listBox1->setPosition(win.getSize().x * 3 / 4 + 30 + win.getSize().y / 10, 0);
+    listBox1->setTextSize(27);
+
+    gui.add(listBox1);
 
     auto editBox = tgui::EditBox::create();
     editBox->setSize(win.getSize().x / 2, win.getSize().y / 5);
@@ -99,17 +108,26 @@ int main() {
     button->connect("pressed", [&]() {
         string s(listBox->getSelectedItem().toAnsiString());
         tm.init(editBox->getText().toAnsiString(), 'B', folder + "/" + s);
+        auto rules = tm.rules;
+        listBox1->removeAllItems();
+        for (auto &i:rules) {
+            string str =
+                    "(" + to_string(get<0>(i.first)) + "," + get<1>(i.first) + ")->(" + to_string(get<0>(i.second)) +
+                    "," +
+                    get<1>(i.second) + "," + to_string(get<2>(i.second)) + ")";
+            listBox1->addItem(str);
+        }
     });
     gui.add(button);
 
     auto button1 = tgui::Button::create();
     button1->setSize(win.getSize().y / 10, win.getSize().y / 2.5);
-    button1->setPosition(win.getSize().x * 3 / 4 + 20, win.getSize().y / 5+20);
+    button1->setPosition(win.getSize().x * 3 / 4 + 20, win.getSize().y / 5 + 20);
     button1->setText("Step");
     button1->setTextSize(win.getSize().y / 12);
     button1->connect("pressed", [&]() {
         int success = tm.read();
-        if(success == 0){
+        if (success == 0) {
             auto child = tgui::ChildWindow::create();
             child->setSize(300, 120);
             child->setPosition(420, 80);
@@ -121,7 +139,7 @@ int main() {
             child->add(label);
             gui.add(child);
         }
-        if(success == 2){
+        if (success == 2) {
             auto child = tgui::ChildWindow::create();
             child->setSize(300, 120);
             child->setPosition(420, 80);

@@ -14,7 +14,7 @@ public:
     enum Direction {
         L = -1, S = 0, R = 1
     };
-private:
+public:
     int state;
     int location;
     char stop;
