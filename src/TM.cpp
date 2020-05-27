@@ -11,10 +11,10 @@ bool TM::init(const std::string &str, char s, const std::string &address) {
 }
 
 auto &TM::_find() {
-    for(auto& i : rules){
+    for (auto &i : rules) {
 //        std::cout << std::get<0>(i.first)<< std::get<1>(i.first) << std::get<0>(i.second)<< std::get<1>(i.second)<< std::get<2>(i.second) << std::endl;
-        if(state == std::get<0>(i.first) && paper[location] == std::get<1>(i.first)){
-            return  i;
+        if (state == std::get<0>(i.first) && paper[location] == std::get<1>(i.first)) {
+            return i;
         }
     }
     return *rules.end();
@@ -23,8 +23,8 @@ auto &TM::_find() {
 int TM::read() {
     auto it = _find();
     if (it == *rules.end()) {
-        for(auto& i :stops){
-            if(paper[location] == std::get<1>(i) && state == std::get<0>(i)){
+        for (auto &i :stops) {
+            if (state == std::get<0>(i)) {
                 return 2;
             }
         }
@@ -34,8 +34,11 @@ int TM::read() {
         paper[location] = std::get<1>(it.second);
         int old = location;
         location += (int) std::get<2>(it.second);
-        if (location < 0 || location >= paper.length())
+        if (location < 0)
             location = old;
+        if (location >= paper.length()) {
+            paper += 'B';
+        }
         return 1;
     }
 }
@@ -46,11 +49,11 @@ bool TM::_read_rules(const std::string &address) {
         return false;
     std::string line;
     while (std::getline(file, line)) {
-        if(line == "Stop")
+        if (line == "Stop")
             break;
         auto fir = std::make_tuple(int(line[0] - '0'), line[2]);
         Direction d;
-        switch (line[8]){
+        switch (line[8]) {
             case 'S':
                 d = S;
                 break;
@@ -64,8 +67,8 @@ bool TM::_read_rules(const std::string &address) {
         std::pair<std::tuple<int, char>, std::tuple<int, char, Direction>> p(fir, sec);
         rules.insert(p);
     }
-    while(std::getline(file, line)){
-        if(line == "End")
+    while (std::getline(file, line)) {
+        if (line == "End")
             break;
         auto fir = std::make_tuple(int(line[0] - '0'), line[2]);
         stops.emplace_back(fir);
